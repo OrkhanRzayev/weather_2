@@ -1,6 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:weather_2/model.dart';
+import 'package:weather_2/weather.dart';
 
 import 'list_of_details.dart';
 
@@ -14,17 +16,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _data = Data();
+  final controller = TextEditingController();
+  WeatherResponse? weatherResponse;
   int currentIndex = 0;
-  List<Widget> options = <Widget>[
-    const Text('HomeScreen'),
-    const Center(
-      child: TextField(
-        decoration: InputDecoration(border: OutlineInputBorder()),
-      ),
-    )
-  ];
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> options = <Widget>[
+      const Text('Detailes'),
+      Padding(
+        padding: const EdgeInsets.all(8),
+        child: Center(
+          child: SizedBox(
+            width: 200,
+            child: TextField(
+              onEditingComplete: search,
+              controller: controller,
+              textAlign: TextAlign.center,
+              decoration: const InputDecoration(
+                labelText: 'City',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+        ),
+      )
+    ];
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -53,7 +71,7 @@ class _HomePageState extends State<HomePage> {
           const DetailText(),
           const Divider(
             height: 5,
-            thickness: 3,
+            thickness: 2,
             color: Colors.grey,
             endIndent: 40,
             indent: 40,
@@ -80,6 +98,12 @@ class _HomePageState extends State<HomePage> {
           },
         ));
   }
+
+  void search() async {
+    final response = await _data.getWeather(controller.text);
+
+    weatherResponse = response;
+  }
 }
 
 class DetailText extends StatelessWidget {
@@ -97,10 +121,7 @@ class DetailText extends StatelessWidget {
 }
 
 class WeatherBox extends StatelessWidget {
-  const WeatherBox({
-    Key? key,
-  }) : super(key: key);
-
+  const WeatherBox({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -152,7 +173,7 @@ class WeatherBox extends StatelessWidget {
             children: [
               Text(
                 '2°',
-                style: TextStyle(fontSize: 50, color: textColor),
+                style: TextStyle(fontSize: 40, color: textColor),
               ),
               ElevatedButton(
                 onPressed: () {},
