@@ -3,10 +3,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:weather_2/model.dart';
+import 'package:weather_2/models/weather.dart';
 
-class Data {
-  Future<WeatherResponse> getWeather(String city) async {
+class WeatherRepositroy {
+  static Future<Weather> getWeather(String city) async {
     // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
     final queryParameters = {
       'q': city,
@@ -21,6 +21,6 @@ class Data {
     print(response.body);
 
     final json = jsonDecode(response.body);
-    return WeatherResponse.fromJson(json);
+    return Weather.fromJson(json);
   }
 }
