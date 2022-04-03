@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'homePage.dart';
+import 'screens/homePage.dart';
 
 class ListOfDetails extends StatelessWidget {
   const ListOfDetails({Key? key}) : super(key: key);
